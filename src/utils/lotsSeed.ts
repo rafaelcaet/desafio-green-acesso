@@ -1,3 +1,4 @@
+// Exemplo do seed para povoar o banco de lotes previamente
 export default function lotsSeed() {
   return [
     { name: "0015", enable: true },

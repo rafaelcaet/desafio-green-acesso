@@ -27,7 +27,7 @@ export class LotsController {
   findOne(@Param("id") id: string) {
     return this.lotsService.findOne(+id);
   }
-
+  // Rota publica
   @Post("seed")
   async seed() {
     return this.lotsService.seed();

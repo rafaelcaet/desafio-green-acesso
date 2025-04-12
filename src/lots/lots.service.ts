@@ -5,6 +5,7 @@ import lotsSeed from "src/utils/lotsSeed";
 @Injectable()
 export class LotsService {
   constructor(private prisma: PrismaService) {}
+  // Insere no banco registros para iniciar o projeto
   async seed() {
     const lots = lotsSeed();
     await this.prisma.lots.createMany({ data: lots });
