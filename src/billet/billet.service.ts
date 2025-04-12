@@ -1,9 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma/prisma.service";
 import { PDFDocument } from "pdf-lib";
-import { writeFile } from "fs/promises";
-import * as path from "path";
-import * as os from "os";
+import { Buffer } from "buffer";
 
 @Injectable()
 export class BilletService {
@@ -21,48 +19,43 @@ export class BilletService {
       return;
     }
 
+    // cria o pdf
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([600, 800]);
 
     let yOffset = 750; // inicio do arquivo
 
-    page.drawText("Relatório de boletos", { x: 50, y: yOffset, size: 18 });
-    yOffset -= 30; // espaco depois do titulo
+    // adicionar título
+    page.drawText("Relatório de Boletos", { x: 50, y: yOffset, size: 18 });
+    yOffset -= 30; // Espaco depois do titulo
 
-    for (const boleto of billets) {
-      page.drawText(`Nome: ${boleto.withdrawName}`, {
-        x: 50,
+    // cabecalho
+    page.drawText("Nome", { x: 50, y: yOffset, size: 12 });
+    page.drawText("Unidade", { x: 150, y: yOffset, size: 12 });
+    page.drawText("Valor", { x: 250, y: yOffset, size: 12 });
+    page.drawText("Linha Digitável", { x: 350, y: yOffset, size: 12 });
+    yOffset -= 20;
+
+    for (const billet of billets) {
+      page.drawText(`${billet.withdrawName}`, { x: 50, y: yOffset, size: 12 });
+      page.drawText(`${billet.lotId}`, { x: 150, y: yOffset, size: 12 });
+      page.drawText(`R$ ${billet.value.toFixed(2)}`, {
+        x: 250,
         y: yOffset,
         size: 12,
       });
+      page.drawText(`${billet.writeLine}`, { x: 350, y: yOffset, size: 12 });
       yOffset -= 20;
-      page.drawText(`Unidade: ${boleto.lotId}`, {
-        x: 50,
-        y: yOffset,
-        size: 12,
-      });
-      yOffset -= 20;
-      page.drawText(`Valor: R$ ${boleto.value.toFixed(2)}`, {
-        x: 50,
-        y: yOffset,
-        size: 12,
-      });
-      yOffset -= 20;
-      page.drawText(`Linha Digitável: ${boleto.writeLine}`, {
-        x: 50,
-        y: yOffset,
-        size: 12,
-      });
-      yOffset -= 40;
     }
 
-    const desktopPath = path.join(os.homedir(), "Desktop");
-    const filePath = path.join(desktopPath, "report_billets.pdf");
-
-    // salvar o PDF no desktop
     const pdfBytes = await pdfDoc.save();
-    await writeFile(filePath, pdfBytes);
 
-    return { message: "All files were generated successfully", filePath };
+    // transforma em base64
+    const base64 = Buffer.from(pdfBytes).toString("base64");
+
+    return {
+      message: "PDF gerado com sucesso",
+      base64: base64,
+    };
   }
 }
