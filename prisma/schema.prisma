@@ -7,17 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model lot {
+model lots {
   id        Int      @id @default(autoincrement())
   name      String?  @db.VarChar(100)
   enable    Boolean  @default(true)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  billets billet[]
+  billets billets[]
 }
 
-model billet {
+model billets {
   id           Int      @id @default(autoincrement())
   withdrawName String?  @map("withdraw_name") @db.VarChar(255)
   lotId        Int      @map("lot_id")
@@ -27,5 +27,5 @@ model billet {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @default(now()) @map("updated_at")
 
-  lots lot @relation(fields: [lotId], references: [id])
+  lots lots @relation(fields: [lotId], references: [id])
 }
