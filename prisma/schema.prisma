@@ -8,13 +8,12 @@ datasource db {
 }
 
 model lots {
-  id        Int      @id @default(autoincrement())
-  name      String?  @db.VarChar(100)
-  enable    Boolean  @default(true)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
-
-  billets billets[]
+  id        Int       @id @default(autoincrement())
+  name      String?   @db.VarChar(100)
+  enable    Boolean   @default(true)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  billets   billets[]
 }
 
 model billets {
@@ -26,6 +25,5 @@ model billets {
   enable       Boolean  @default(true)
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @default(now()) @map("updated_at")
-
-  lots lots @relation(fields: [lotId], references: [id])
+  lots         lots     @relation(fields: [lotId], references: [id])
 }
