@@ -5,8 +5,8 @@
   "main": "dist/src/main",
   "scripts": {
     "build": "nest build",
-    "start:dev": "nest start --watch",
-    "start:prod": "node ."
+    "dev": "nest start --watch",
+    "prod": "node ."
   },
   "keywords": [],
   "author": "",
@@ -16,8 +16,7 @@
     "@nestjs/common": "^11.0.16",
     "@nestjs/core": "^11.0.16",
     "@nestjs/platform-express": "^11.0.16",
-    "@prisma/client": "^6.6.0",
-    "prisma": "^6.6.0",
+    "@prisma/client": "^6.3.1",
     "reflect-metadata": "0.2"
   },
   "devDependencies": {
@@ -25,6 +24,7 @@
     "@nestjs/schematics": "^11.0.5",
     "@types/node": "^22.14.1",
     "ts-node": "^10.9.2",
+    "prisma": "^6.3.1",
     "typescript": "^5"
   }
 }
