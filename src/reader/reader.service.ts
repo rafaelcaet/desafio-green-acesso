@@ -37,7 +37,7 @@ export class ReaderService {
           });
 
           if (!lot) {
-            throw new Error(`Lote não encontrado para unidade ${line.unidade}`);
+            throw new Error(`Lot no found: ${line.unidade}`);
           }
 
           // Retorna o objeto formatado para inserção no banco
